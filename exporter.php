@@ -1,6 +1,80 @@
 <?php
 
 
+/*--------------------------------------------------------------------------------------
+*
+*	automatic_exporter_export_acf
+*
+*	@desc PHP-Export code pulled from Advanced Custom Fields - ./advanced-custom-fields/core/controllers/export.php
+*	@author Elliot Condon
+* 
+*-------------------------------------------------------------------------------------*/
+function automatic_exporter_export_acf() {
+
+	$acfs = array();
+	
+	$acfs = get_posts(array(
+		'numberposts' 	=> -1,
+		'post_type' 	=> 'acf',
+		'orderby' 		=> 'menu_order title',
+		'order' 		=> 'asc',
+		//'include'		=>	$_POST['acf_posts'],
+		'suppress_filters' => false,
+	));
+	
+		
+	if( $acfs ){
+
+echo "<?";
+		?>
+
+
+if(function_exists("register_field_group"))
+{
+<?php
+			foreach( $acfs as $i => $acf )
+			{
+				// populate acfs
+				$var = array(
+					'id' => $acf->post_name,
+					'title' => $acf->post_title,
+					'fields' => apply_filters('acf/field_group/get_fields', array(), $acf->ID),
+					'location' => apply_filters('acf/field_group/get_location', array(), $acf->ID),
+					'options' => apply_filters('acf/field_group/get_options', array(), $acf->ID),
+					'menu_order' => $acf->menu_order,
+				);
+				
+				
+				$var['fields'] = apply_filters('acf/export/clean_fields', $var['fields']);
+
+
+				// create html
+				$html = var_export($var, true);
+				
+				// change double spaces to tabs
+				$html = str_replace("  ", "\t", $html);
+				
+				// correctly formats "=> array("
+				$html = preg_replace('/([\t\r\n]+?)array/', 'array', $html);
+				
+				// Remove number keys from array
+				$html = preg_replace('/[0-9] => array/', 'array', $html);
+				
+				// add extra tab at start of each line
+				$html = str_replace("\n", "\n\t", $html);
+				
+?>	register_field_group(<?php echo $html ?>);
+<?php
+			}
+?>
+}
+
+<?php
+echo "?>";
+
+		}
+}
+
 /**
 THE BELOW CODE WAS ORIGINALLY PULLED FROM WORDPRESS CORE ./wp-admin/includes/export.php
 

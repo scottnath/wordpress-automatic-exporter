@@ -32,6 +32,7 @@ function automatic_exporter_options_page(){
   $options_panel->TabsListing(array(
     'links' => array(
     'options_1' =>  __('Exporter Options','apc'),
+    'options_2' =>  __('ACF PHP Export Options','apc'),
     )
   ));
   
@@ -51,10 +52,12 @@ function automatic_exporter_options_page(){
   $options_panel->Title(__("Exporter Options","apc"));
   //An optionl descrption paragraph
   $options_panel->addParagraph(__("This is a simple paragraph","apc"));
+  //checkbox field
+  $options_panel->addCheckbox('automatic_exporter_acf_xml_onoff',array('name'=> __('ACF XML export on/off','apc'), 'std' => false, 'desc' => __('Check this box to turn on exporting a xml file with all of the selected post type\'s entries in it.','apc')));
   //text field
-  $options_panel->addText('automatic_exporter_folder', array('name'=> __('XML Export Folder','apc'), 'std'=> $upload_dir['basedir'] . "/automatic_exporter/", 'desc' => __('Add full path to folder if other than default. Default folder: <br><strong>'.$upload_dir['basedir'] . "/automatic_exporter/</strong>",'apc')));
+  $options_panel->addText('automatic_exporter_folder', array('name'=> __('XML Export Folder','apc'), 'std'=> '', 'desc' => __('Add full path to folder if other than default. Default folder: <br><strong>'.$upload_dir['basedir'] . "/automatic_exporter/</strong>",'apc')));
   //text field
-  $options_panel->addText('automatic_exporter_filename', array('name'=> __('XML Export Filename','apc'), 'std'=> "section-export.xml", 'desc' => __('Add filename. Default filename: <br><strong>section-export.xml</strong>','apc')));
+  $options_panel->addText('automatic_exporter_filename', array('name'=> __('XML Export Filename','apc'), 'std'=> '', 'desc' => __('Add filename. Default filename: <br><strong>'.XML_DEFAULT_FILENAME.'</strong>','apc')));
   //select field
   $options_panel->addSelect('automatic_exporter_post_type_select',ae_return_post_types(),array('name'=> __('Select post type ','apc'), 'std'=> array('selectkey2'), 'desc' => __('Select the post type you want to build you xml file from.','apc')));
   //checkbox field
@@ -63,6 +66,36 @@ function automatic_exporter_options_page(){
   /**
    * Close first tab
    */   
+  $options_panel->CloseTab();
+  
+
+  /**
+   * Open admin page Second tab
+   */
+  $options_panel->OpenTab('options_2');
+  /**
+   * Add fields to your admin page 2nd tab
+   * 
+   * Fancy options:
+   *  typography field
+   *  image uploader
+   *  Pluploader
+   *  date picker
+   *  time picker
+   *  color picker
+   */
+  //title
+  $options_panel->Title(__('Advanced Custom Fields PHP Export Options','apc'));
+  //checkbox field
+  $options_panel->addCheckbox('automatic_exporter_acf_php_onoff',array('name'=> __('ACF PHP export on/off','apc'), 'std' => false, 'desc' => __('Check this box to turn on exporting a php file with all of your Advanced Custom Fields\'s settings','apc')));
+  //text field
+  $options_panel->addText('automatic_exporter_acf_php_folder', array('name'=> __('ACF PHP Export Folder','apc'), 'std'=> '', 'desc' => __('Add full path to folder if other than default. Default folder: <br><strong>'.$upload_dir['basedir'] . "/automatic_exporter/</strong>",'apc')));
+  //text field
+  $options_panel->addText('automatic_exporter_acf_php_filename', array('name'=> __('ACF PHP Export Filename','apc'), 'std'=> '', 'desc' => __('Add filename. Default filename: <br><strong>'.ACF_PHP_DEFAULT_FILENAME.'</strong>','apc')));
+  
+  /**
+   * Close second tab
+   */ 
   $options_panel->CloseTab();
 }
 
