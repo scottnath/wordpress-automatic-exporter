@@ -3,7 +3,7 @@
 Plugin Name: Automatic Exporter
 Plugin URI: http://triphere.com
 Description: Plugin to automatically export an an entire set of a post-type's entries on post save
-Version: .2
+Version: .2.1
 Author: Scott Nath
 Author URI: http://triphere.com
 License: GPL
@@ -89,7 +89,7 @@ global $post;
 	fwrite($fp, $section_xml);
 	
 	// re-run this on save_post hook, otherwise we won't get our latest changes
-	add_action('save_post', array(&$this, __FUNCTION__));
+	add_action('save_post', "automatic_exporter_create_xml");
 }
 add_action("wp_insert_post", "automatic_exporter_create_xml");
 
@@ -146,7 +146,7 @@ global $post;
 	fwrite($fp, $acf_php);
 	
 	// re-run this on save_post hook, otherwise we won't get our latest changes
-	add_action('save_post', array(&$this, __FUNCTION__));
+	add_action('save_post', "automatic_exporter_create_xml");
 	
 }
 add_action("wp_insert_post", "automatic_exporter_create_acf_php");

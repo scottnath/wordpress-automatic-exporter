@@ -1,6 +1,9 @@
 wordpress-automatic-exporter
 ============================
 
+version .2.1
+* bug fix for some servers when making xml file
+
 version .2
 * added ability to export Advanced Custom Fields php
 
